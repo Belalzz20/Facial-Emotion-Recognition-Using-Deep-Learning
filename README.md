@@ -246,7 +246,7 @@ Examples of facial expression predictions from the FER2013 evaluation dataset.
 
 The screenshots show the ground-truth labels alongside the predicted labels.
 
-![FER2013 Evaluation Samples](screenshots/evaluation-samples.png)
+![FER2013 Evaluation Samples](screenshots/evaluation-samples.png.png)
 
 ### 2. Custom Image Prediction - Ronaldo
 
@@ -260,7 +260,7 @@ The image is processed to extract the facial region and prepare it for CNN infer
 - **Confidence Score:** 99.99%
 - **Processed Image Size:** 128 × 128 pixels
 
-![Ronaldo Prediction](screenshots/ronaldo-prediction.png)
+![Ronaldo Prediction](screenshots/ronaldo-prediction.png.png)
 
 ### 3. Custom Image Prediction
 
@@ -274,8 +274,7 @@ The original image is transformed into a processed grayscale facial image before
 - **Confidence Score:** 94.45%
 - **Processed Image Size:** 128 × 128 pixels
 
-![Custom Image Prediction](screenshots/custom-prediction.png)
-
+![Custom Image Prediction](screenshots/custom-prediction.png.png)
 **Note:** Confidence scores represent model output probabilities and do not guarantee classification accuracy. Facial expression predictions should not be interpreted as definitive measurements of a person's emotional state.
 
 ## Custom Image Prediction Workflow
