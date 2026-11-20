@@ -1,34 +1,32 @@
 
 # Facial Emotion Recognition Using Deep Learning
 
-### Deep Learning | Computer Vision | CNN | TensorFlow | OpenCV
+### Computer Vision | CNN | TensorFlow | Keras | OpenCV
 
 ## Overview
 
-This project implements a Facial Emotion Recognition system using Deep Learning and Computer Vision techniques.
+This project implements a facial expression classification system using Deep Learning and Computer Vision.
 
-A Convolutional Neural Network (CNN) is trained on the FER2013 dataset to classify facial expressions into seven emotion categories.
+A custom Convolutional Neural Network (CNN) is trained on the FER2013 dataset to classify facial expressions into seven categories.
 
-The project combines image preprocessing, face detection, data augmentation, CNN-based classification, and model evaluation to build an end-to-end facial expression recognition workflow.
-
-The system also supports testing custom images and visualizing predicted emotion categories with confidence scores.
+The project covers the complete machine learning workflow, including dataset preparation, image preprocessing, data augmentation, CNN training, model evaluation, and predictions on custom images.
 
 ## Key Features
 
-- Facial expression classification using CNN.
-- Seven-class emotion recognition.
-- Face detection using OpenCV Haar Cascades.
-- Image preprocessing and enhancement.
-- CLAHE-based contrast enhancement.
-- Manual Gaussian filtering and image sharpening.
-- Data augmentation for model training.
-- CNN architecture with Batch Normalization and Dropout.
-- Model evaluation using classification metrics.
-- Confusion matrix visualization.
-- Training and validation performance visualization.
-- Custom image prediction and confidence visualization.
+- Facial expression classification using a CNN
+- Seven facial expression categories
+- Face detection using OpenCV Haar Cascades
+- Grayscale image preprocessing
+- CLAHE contrast enhancement
+- Gaussian filtering and image sharpening
+- Image resizing and normalization
+- Data augmentation during model training
+- CNN architecture with Batch Normalization and Dropout
+- Training and validation performance visualization
+- Confusion matrix and classification report
+- Custom image predictions with confidence scores
 
-## Emotion Categories
+## Facial Expression Categories
 
 The model classifies facial expressions into seven categories:
 
@@ -42,13 +40,15 @@ The model classifies facial expressions into seven categories:
 
 ## Dataset
 
-### FER2013 - Facial Expression Recognition Dataset
+The project uses the **FER2013 (Facial Expression Recognition 2013)** dataset.
 
-The project uses the FER2013 dataset, a widely used benchmark for facial expression classification.
+The dataset contains facial images organized into training and testing directories.
 
-The dataset contains grayscale facial images organized into training and testing directories.
+**Dataset Source:**
 
-The dataset is downloaded using KaggleHub.
+https://www.kaggle.com/datasets/msambare/fer2013
+
+The dataset is downloaded using KaggleHub:
 
 ```python
 import kagglehub
@@ -56,48 +56,39 @@ import kagglehub
 path = kagglehub.dataset_download("msambare/fer2013")
 ```
 
-**Dataset Source:**
-
-https://www.kaggle.com/datasets/msambare/fer2013
-
 ### Dataset Preparation
 
-The dataset preparation process includes:
+The preparation workflow includes:
 
-- Loading images from training and testing directories.
-- Converting images to grayscale.
-- Applying face detection and preprocessing.
-- Resizing images to 128 × 128 pixels.
-- Preparing labels for multi-class classification.
-- Creating training, validation, and testing data.
+- Loading training and testing images
+- Grayscale conversion
+- Face detection and cropping
+- Image enhancement
+- Resizing images to 128 × 128 pixels
+- Preparing labels for multi-class classification
+- Splitting data for training and validation
 
 ## Image Preprocessing
 
-Image preprocessing is an important part of the project.
-
-The implemented pipeline includes:
+The project applies several image processing techniques before passing images to the CNN.
 
 ### 1. Grayscale Conversion
 
-Input images are converted into grayscale to simplify image representation and reduce computational complexity.
+Input images are converted to grayscale to reduce image complexity.
 
 ### 2. Face Detection
 
-OpenCV Haar Cascade classifiers are used to detect faces.
+OpenCV Haar Cascade classifiers are used to locate facial regions.
 
 When a face is detected, the first detected face is cropped for further processing.
 
 ### 3. Image Resizing
 
-Processed images are resized to:
+Images are resized to a consistent resolution of 128 × 128 pixels.
 
-**128 × 128 pixels**
+### 4. CLAHE
 
-This provides a consistent input shape for the CNN model.
-
-### 4. Contrast Enhancement
-
-Contrast Limited Adaptive Histogram Equalization (CLAHE) is applied to improve local image contrast.
+Contrast Limited Adaptive Histogram Equalization is applied to improve local contrast.
 
 ### 5. Gaussian Filtering
 
@@ -105,81 +96,79 @@ A manually implemented Gaussian filter is used for image smoothing.
 
 ### 6. Image Sharpening
 
-A sharpening filter is applied to enhance facial image details.
+Sharpening is applied to enhance facial image details.
 
-### 7. Image Standardization
+### 7. Normalization
 
-Processed images are prepared for CNN input using consistent pixel normalization and tensor dimensions.
+Images are prepared as normalized numerical arrays for CNN processing.
 
 ## CNN Model Architecture
 
-The project uses a custom Convolutional Neural Network designed for multi-class facial expression classification.
+The model uses a custom CNN architecture with four convolutional blocks.
 
-The architecture includes:
-
-- Convolutional layers.
-- Batch Normalization.
-- Max Pooling.
-- Global Average Pooling.
-- Fully Connected layers.
-- Dropout regularization.
-- Softmax classification.
-
-### Architecture Overview
+### Architecture
 
 ```text
-Input Image
-(128 × 128 × 1)
-        |
-        v
-Conv2D (32 Filters)
-Batch Normalization
-Max Pooling
-        |
-        v
-Conv2D (64 Filters)
-Batch Normalization
-Max Pooling
-        |
-        v
-Conv2D (128 Filters)
-Batch Normalization
-Max Pooling
-        |
-        v
-Conv2D (256 Filters)
-Batch Normalization
-Max Pooling
-        |
-        v
-Global Average Pooling
-        |
-        v
-Dense Layer (256)
-ReLU Activation
-        |
-        v
-Dropout (0.5)
-        |
-        v
-Dense Layer (7)
-Softmax Activation
-        |
-        v
-Predicted Emotion
+Input Image (128 × 128 × 1)
+              |
+              v
+      Conv2D (32 Filters)
+      Batch Normalization
+         Max Pooling
+              |
+              v
+      Conv2D (64 Filters)
+      Batch Normalization
+         Max Pooling
+              |
+              v
+      Conv2D (128 Filters)
+      Batch Normalization
+         Max Pooling
+              |
+              v
+      Conv2D (256 Filters)
+      Batch Normalization
+         Max Pooling
+              |
+              v
+      Global Average Pooling
+              |
+              v
+      Dense (256, ReLU)
+              |
+              v
+         Dropout (0.5)
+              |
+              v
+      Dense (7, Softmax)
+              |
+              v
+      Facial Expression
+        Classification
 ```
+
+### Architecture Components
+
+- Convolutional layers for feature extraction
+- Batch Normalization for training stability
+- Max Pooling for spatial dimensionality reduction
+- Global Average Pooling for feature aggregation
+- Dense layers for classification
+- Dropout for regularization
+- Softmax for multi-class probability prediction
 
 ## Model Training
 
-The CNN is trained using TensorFlow and Keras.
+The CNN is developed and trained using TensorFlow and Keras.
 
 ### Training Configuration
 
 | Parameter | Configuration |
 |-----------|---------------|
-| Model | Convolutional Neural Network |
+| Model | Custom CNN |
 | Framework | TensorFlow / Keras |
-| Input Size | 128 × 128 × 1 |
+| Input Shape | 128 × 128 × 1 |
 | Output Classes | 7 |
 | Optimizer | Adam |
 | Loss Function | Categorical Crossentropy |
@@ -189,41 +178,39 @@ The CNN is trained using TensorFlow and Keras.
 
 ### Training Techniques
 
-The training workflow includes:
+The training process incorporates:
 
-- Data augmentation.
-- Batch Normalization.
-- Dropout regularization.
-- Early stopping.
-- Model checkpointing.
-- Learning rate scheduling.
+- Data augmentation
+- Batch Normalization
+- Dropout regularization
+- Early stopping
+- Model checkpointing
+- Learning rate scheduling
 
 ### Data Augmentation
 
-Image augmentation is used to introduce variations during training.
+The project uses image augmentation techniques such as:
 
-The augmentation techniques include:
+- Rotation
+- Horizontal and vertical shifts
+- Shearing
+- Zooming
+- Horizontal flipping
 
-- Rotation.
-- Width and height shifts.
-- Shearing.
-- Zooming.
-- Horizontal flipping.
-
-These transformations help the model learn from variations in facial image appearance.
+These transformations introduce image variations during training.
 
 ## Model Evaluation
 
-The trained CNN model was evaluated on the FER2013 test dataset using standard multi-class classification metrics.
+The trained CNN model was evaluated using the FER2013 test dataset.
 
 ### Evaluation Metrics
 
-- Accuracy.
-- Precision.
-- Recall.
-- F1-score.
-- Confusion Matrix.
-- Training and Validation Curves.
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion Matrix
+- Training and Validation Curves
 
 ### Overall Performance
 
@@ -239,19 +226,17 @@ The evaluation provides an overview of the model's classification performance on
 
 ### Performance Visualization
 
-The notebook includes visualizations for:
+The notebook includes visualizations of:
 
-- Training accuracy.
-- Validation accuracy.
-- Training loss.
-- Validation loss.
-- Confusion matrix.
+- Training accuracy
+- Validation accuracy
+- Training loss
+- Validation loss
+- Confusion matrix
 
-These visualizations support analysis of the model's learning behavior and classification results.
+## Custom Image Prediction
 
-## Emotion Prediction
-
-The project includes functionality for testing the trained model on custom images.
+The project supports testing the trained model using custom images.
 
 ### Prediction Workflow
 
@@ -265,7 +250,7 @@ Face Detection
 Image Preprocessing
      |
      v
-Resize to 128 × 128
+Resize and Normalize
      |
      v
 CNN Model
@@ -274,23 +259,20 @@ CNN Model
 Softmax Probabilities
      |
      v
-Predicted Emotion
-     |
-     v
-Prediction Visualization
+Predicted Expression
 ```
 
 ### Prediction Output
 
-The prediction workflow can display:
+The notebook can display:
 
-- Original input image.
-- Preprocessed facial image.
-- Predicted emotion category.
-- Prediction confidence score.
-- Class probability distribution.
+- Original image
+- Preprocessed image
+- Predicted facial expression
+- Prediction confidence
+- Probability distribution across classes
 
-The predictions represent facial expression categories inferred from images, not a definitive assessment of a person's internal emotional state.
+Predictions represent visible facial expression patterns and should not be interpreted as definitive measurements of a person's emotional state.
 
 ## Technologies Used
 
@@ -298,33 +280,32 @@ The predictions represent facial expression categories inferred from images, not
 |------------|---------|
 | Python | Programming language |
 | TensorFlow | Deep learning framework |
-| Keras | CNN model development |
-| OpenCV | Image processing and face detection |
-| NumPy | Numerical operations |
+| Keras | CNN development and training |
+| OpenCV | Face detection and image processing |
+| NumPy | Numerical computations |
 | Pandas | Data handling |
-| Scikit-learn | Model evaluation and data preparation |
-| Matplotlib | Data visualization |
-| KaggleHub | Dataset downloading |
-| Google Colab | Model development and execution |
-| Jupyter Notebook | Interactive development |
+| Scikit-learn | Data preparation and evaluation |
+| Matplotlib | Visualization |
+| KaggleHub | Dataset acquisition |
+| Google Colab | Development environment |
+| Jupyter Notebook | Interactive experimentation |
 
 ## Installation and Setup
 
 ### Prerequisites
 
 - Python 3.x
-- Jupyter Notebook or Google Colab
-- Required Python libraries
-- Internet connection for downloading the dataset
+- Google Colab or Jupyter Notebook
+- Required Python dependencies
+- Internet connection for dataset downloading
 
-Google Colab is recommended because the notebook includes Colab-specific image upload and download functionality.
+Google Colab is recommended because the notebook uses Colab-specific functionality.
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Belalzz20/Facial-Emotion-Recognition-CNN.git
-
-cd Facial-Emotion-Recognition-CNN
+git clone https://github.com/Belalzz20/Facial-Emotion-Recognition-Using-Deep-Learning.git
+cd Facial-Emotion-Recognition-Using-Deep-Learning
 ```
 
 ### 2. Install Dependencies
@@ -335,109 +316,95 @@ pip install tensorflow opencv-python numpy pandas matplotlib scikit-learn kaggle
 
 ### 3. Open the Notebook
 
-Open the following file in Google Colab or Jupyter Notebook:
+Open:
 
-```text
-D_image.ipynb
-```
+`D_image.ipynb`
+
+in Google Colab.
 
 ### 4. Download the Dataset
 
-Execute the dataset-loading cells in the notebook.
+Execute the dataset-loading cells to download FER2013 using KaggleHub.
 
-The FER2013 dataset will be downloaded using KaggleHub.
+### 5. Preprocess the Images
 
-### 5. Run the Preprocessing Pipeline
+Run the preprocessing pipeline to prepare the facial images for CNN training.
 
-Execute the preprocessing cells to prepare facial images for training and testing.
+### 6. Train the Model
 
-### 6. Train the CNN Model
-
-Run the model-building and training cells in sequence.
-
-The notebook includes model checkpointing and saves trained model artifacts.
+Execute the model-building and training cells in sequence.
 
 ### 7. Evaluate the Model
 
-Execute the evaluation cells to generate:
-
-- Classification report.
-- Confusion matrix.
-- Training and validation visualizations.
+Run the evaluation cells to generate classification metrics and visualizations.
 
 ### 8. Test Custom Images
 
-Run the image prediction cells to upload and classify facial images.
+Use the custom image prediction functionality to upload and classify facial images.
 
-**Note:** The notebook's interactive menu contains a training option that references an undefined function. Training should be performed through the existing training cells.
+**Note:** The interactive menu's training option references a function that is not defined in the notebook. Run the training cells directly instead.
 
 ## Project Structure
 
 ```text
-Facial-Emotion-Recognition-CNN/
+Facial-Emotion-Recognition-Using-Deep-Learning/
 |
 |-- D_image.ipynb
+|-- Facial Emotion Recognition.pdf
+|-- References.pdf
+|-- Survey of  Facial Emotion Recognition.pdf
+|-- Test_1.jpg
 |-- README.md
-|
-|-- docs/
-|   |-- Facial Emotion Recognition.pdf
-|   |-- Survey of Facial Emotion Recognition.pdf
-|   |-- References.pdf
-|
-|-- sample_images/
-    |-- Ronaldo 1.jpg
-    |-- ronaldo 2.jpg
-    |-- ronaldo3.jpg
-    |-- Test_1.jpg
 ```
 
-This is the recommended GitHub repository structure.
+### File Descriptions
 
-Sample images should only be included when redistribution is permitted.
+| File | Description |
+|------|-------------|
+| `D_image.ipynb` | CNN development, training, evaluation, and inference |
+| `Facial Emotion Recognition.pdf` | Project documentation |
+| `References.pdf` | Supporting references |
+| `Survey of  Facial Emotion Recognition.pdf` | Related research survey |
+| `Test_1.jpg` | Sample image for testing |
+| `README.md` | Project overview and documentation |
 
 ## Project Workflow
 
-The overall development workflow consists of:
-
-1. Dataset acquisition.
-2. Image preprocessing.
-3. Face detection.
-4. Data preparation.
-5. CNN architecture development.
-6. Data augmentation.
-7. Model training.
-8. Model evaluation.
-9. Emotion prediction.
-10. Result visualization.
+1. Dataset acquisition
+2. Image preprocessing
+3. Face detection
+4. Data preparation
+5. CNN model development
+6. Data augmentation
+7. Model training
+8. Model evaluation
+9. Custom image prediction
+10. Result visualization
 
 ## Future Improvements
 
-Potential future developments include:
-
-- Exploring transfer learning architectures.
-- Improving facial detection robustness.
-- Optimizing CNN architecture and hyperparameters.
-- Improving class imbalance handling.
-- Developing a standalone inference application.
-- Supporting real-time webcam-based prediction.
-- Adding automated model testing.
-- Improving model reproducibility.
-- Developing a web-based user interface.
+- Explore transfer learning architectures
+- Improve face detection robustness
+- Optimize CNN hyperparameters
+- Improve handling of class imbalance
+- Develop a standalone inference application
+- Add real-time webcam-based classification
+- Improve experiment reproducibility
+- Develop a web-based interface
 
 ## Learning Outcomes
 
-This project demonstrates practical experience in:
+This project demonstrates practical experience with:
 
-- Deep Learning.
-- Computer Vision.
-- Convolutional Neural Networks.
-- Image preprocessing and enhancement.
-- Face detection.
-- Multi-class image classification.
-- Data augmentation.
-- Model training and evaluation.
-- TensorFlow and Keras development.
-- Model inference and visualization.
+- Deep Learning
+- Computer Vision
+- Convolutional Neural Networks
+- Image preprocessing and enhancement
+- Multi-class classification
+- Data augmentation
+- Model training and evaluation
+- TensorFlow and Keras
+- Model inference and visualization
 
 ## Project Information
 
@@ -447,7 +414,7 @@ This project demonstrates practical experience in:
 
 **Programming Language:** Python
 
-**Deep Learning Framework:** TensorFlow / Keras
+**Framework:** TensorFlow / Keras
 
 **Dataset:** FER2013
 
